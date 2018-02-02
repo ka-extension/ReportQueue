@@ -32,6 +32,23 @@ public class SubmitExec implements Runnable {
 	private static Pattern kaURLPattern = Pattern.compile("^https:\\/\\/(?:www\\.)?khanacademy\\.org.*$");
 	private AsyncContext context;
 
+	private String getOAuthCallback(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		switch (Environment.current) {
+		case HEROKU:
+			return String.format("https://%s%s/callback/%s", request.getServerName(), request.getRequestURI(),
+					session.getAttribute(CSRF.getTokenName()) != null
+							? session.getAttribute(CSRF.getTokenName()).toString()
+							: "");
+		default:
+			return String.format("%s://%s:%d%s/callback/%s", request.getScheme(), request.getServerName(),
+					request.getServerPort(), request.getRequestURI(),
+					session.getAttribute(CSRF.getTokenName()) != null
+							? session.getAttribute(CSRF.getTokenName()).toString()
+							: "");
+		}
+	}
+
 	private void redirectCallback(String type, String id, String callback, HttpSession session,
 			HttpServletResponse response, KAOAuth10aService kaservice, OAuth1RequestToken requestToken)
 			throws IOException {
@@ -61,11 +78,7 @@ public class SubmitExec implements Runnable {
 			reader.close();
 			configIS.close();
 
-			String oauthCallback = String.format("https://%s%s/callback/%s", request.getServerName(),
-					request.getRequestURI(),
-					session.getAttribute(CSRF.getTokenName()) != null
-							? session.getAttribute(CSRF.getTokenName()).toString()
-							: "");
+			String oauthCallback = getOAuthCallback(request);
 
 			KAOAuth10aService kaservice = (KAOAuth10aService) new KAServiceBuilder(configObj.getString("KAAPIPublic"))
 					.apiSecret(configObj.getString("KAAPISecret")).callback(oauthCallback).build(KhanApi.instance());
@@ -138,5 +151,4 @@ public class SubmitExec implements Runnable {
 
 		context.complete();
 	}
-
 }
