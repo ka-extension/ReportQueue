@@ -1,4 +1,4 @@
-package com.ethanmcdonough.ReportQueue;
+package com.ethanmcdonough.ReportQueue.models;
 
 import java.util.Date;
 import java.util.HashMap;
