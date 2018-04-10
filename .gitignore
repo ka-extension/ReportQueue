@@ -1,2 +1,35 @@
-src/main/webapp/WEB-INF/*.json
-src/main/webapp/WEB-INF/credentials/*
+logs
+project/project
+project/target
+target
+tmp
+.history
+dist
+.idea
+*.iml
+/out
+.idea_modules
+.classpath
+.project
+/RUNNING_PID
+.settings
+.DS_Store
+
+server/conf/client-secret.json
+server/conf/credentials
+
+# hidden cross project folders
+shared/.js
+shared/.jvm
+
+# temp files
+.~*
+*~
+*.orig
+
+# eclipse
+.scala_dependencies
+.buildpath
+.cache
+.target
+bin/
