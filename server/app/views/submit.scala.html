@@ -1,0 +1,29 @@
+@(user: User, reportType: String = "", id: String = "", redirect: String = "")
+
+@main("Submit a report") {
+<form id="report-form">
+	<h2>Submit a Report</h2>
+	<p>Type: <select name="type" id="report-type">
+		<option @{Html(if (reportType == "program") "selected" else "")} value="program">Program</option>
+		<option @{Html(if (reportType == "user") "selected" else "")} value="user">User</option>
+	</select></p>
+	<div class="mdl-textfield mdl-js-textfield">
+		<input class="mdl-textfield__input" type="text" id="id" maxlength="255" value="@id" pattern="@{if (reportType == "user") raw"kaid_\d{5,30}" else raw"\d{5,20}"}" required>
+		<label class="mdl-textfield__label" for="id">ID</label>
+		<span class="mdl-textfield__error">Invalid ID</span>
+	</div>
+	<br  />
+	<div class="mdl-textfield mdl-js-textfield">
+		<textarea class="mdl-textfield__input" type="text" rows= "3" id="reason" required></textarea>
+		<label class="mdl-textfield__label" for="reason">How does this program/user violate the guidelines?</label>
+	</div>
+	<div class="mdl-card__actions submit-actions">
+		<input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Report" id="submit-button">
+	</div>
+	<br  />
+	<p id="error"></p>
+	<p id="success"></p>
+	<span id="redirect" data-redir="@redirect"></span>
+</form>
+@scalajs.html.scripts("client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
+}

@@ -8,7 +8,12 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
     "com.vmunier" %% "scalajs-scripts" % "1.1.1",
     guice,
     specs2 % Test,
-    ws
+    "com.google.api-client" % "google-api-client" % "1.23.0",
+    "com.google.oauth-client" % "google-oauth-client-jetty" % "1.23.0",
+    "com.google.apis" % "google-api-services-sheets" % "v4-rev515-1.23.0",
+    "org.scalaj" %% "scalaj-http" % "2.3.0",
+    "org.webjars" % "material-design-lite" % "1.3.0",
+    "org.webjars" % "material-design-icons" % "3.0.1"
   ),
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
   EclipseKeys.preTasks := Seq(compile in Compile)

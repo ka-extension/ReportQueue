@@ -5,11 +5,38 @@
 <html>
   <head>
     <title>@title</title>
-    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+    
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/material-design-icons/material-icons.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/material-design-lite/material.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/standard-page.css")">
+    
+    <script src="@routes.Assets.versioned("lib/material-design-lite/material.min.js")"></script>
+    <script src="@com.ethanmcdonough.reportqueue.controllers.routes.MainController.jsRoutes" type="text/javascript"></script>
   </head>
   <body>
-    @content
-    @scalajs.html.scripts("client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
+  	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  		<header class="mdl-layout__header">
+  			<div class="mdl-layout__header-row">
+  				<span class="mdl-layout-title">ReportQueue</span>
+  				<div class="mdl-layout-spacer"></div>
+  			</div>
+  		</header>
+	  	<main class="mdl-layout__content standard-page">
+	  		<div class="mdl-grid">
+	  			<div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+	  			<div class="mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+	  				@content
+	  			</div>
+	  		</div>
+	  	</main>
+	  	<footer class="mdl-mini-footer">
+	  		<div class="mdl-mini-footer--left-section">
+	  			This product uses the Khan Academy API but is not endorsed or certified by Khan Academy (<a href="https://www.khanacademy.org/" target="_blank">www.khanacademy.org</a>).  Reports are monitored by KA Guardian <a href="https://www.khanacademy.org/profile/kaid_1173497530379971182404232/" target="_blank">Evan Lewis</a>.  Built for <a href="https://chrome.google.com/webstore/detail/the-khan-academy-extensio/gniggljddhajnfbkjndcgnomkddfcial?hl=en-US&gl=US" target="_blank">The Khan Academy Extension</a> 
+	  		</div>
+	  	</footer>
+  	</div>
   </body>
 </html>

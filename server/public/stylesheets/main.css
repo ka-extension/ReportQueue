@@ -1,0 +1,17 @@
+.content {
+    padding: 5vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+.mdl-textfield {
+	width: 100% !important;
+}
+
+#error {
+	color: #ff5555;
+}
+
+#success {
+	color: #009900;
+}
