@@ -16,11 +16,11 @@ class ErrorHandler @Inject() (
   sourceMapper: OptionalSourceMapper,
   router:       Provider[Router]) extends DefaultHttpErrorHandler(env, config, sourceMapper, router) {
 
-  override def onProdServerError(request: RequestHeader, exception: UsefulException) = Future.successful(InternalServerError(views.html.internalservererror.render))
+  override def onProdServerError(request: RequestHeader, exception: UsefulException): Future[Result] = Future.successful(InternalServerError(views.html.internalservererror.render()))
 
-  override def onNotFound(request: RequestHeader, message: String) = Future.successful(
+  override def onNotFound(request: RequestHeader, message: String): Future[Result] = Future.successful(
     if (env.mode == Mode.Prod)
-      NotFound(views.html.notfound.render)
+      NotFound(views.html.notfound.render())
     else
       NotFound(views.html.defaultpages.devNotFound.render(request.method, request.uri, Some(router.get))))
 }

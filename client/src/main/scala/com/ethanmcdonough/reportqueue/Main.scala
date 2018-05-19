@@ -1,17 +1,17 @@
 package com.ethanmcdonough.reportqueue
 
-import com.ethanmcdonough.reportqueue.shared.SharedMessages
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{ Success, Failure }
-import org.scalajs.dom.raw.{ HTMLDocument, HTMLFormElement, HTMLInputElement, HTMLParagraphElement, HTMLSelectElement, HTMLSpanElement, Event }
+import org.scalajs.dom.raw.{HTMLFormElement, HTMLInputElement, HTMLParagraphElement, HTMLSelectElement, HTMLSpanElement, Event}
 import scala.scalajs.js.URIUtils.decodeURIComponent
-import scala.scalajs.js.{ JSON, Dynamic }
-import scala.scalajs.js.Dynamic.{ global => g }
+import scala.scalajs.js.{JSON, Dynamic}
+import scala.scalajs.js.Dynamic.{global => g}
 
 object Main {
-  private val regexes: Map[String, String] = Map("program" -> raw"\d{5,20}", "user" -> raw"kaid_\d{10,30}")
+  private val regexes: Map[String, String] = Map(
+    "program" -> raw"\d{5,20}", "user" -> raw"kaid_\d{10,30}",
+    "discussion" -> raw"([a-zA-Z]+)\|([a-zA-Z]+)\|([a-zA-Z\d]+)\|(kaencrypted_[\w]+)")
   private def getCSRF: String = dom.document.cookie.split(";").map(_.split("=").map(e => decodeURIComponent(e.trim))).filter(_(0) == "ftok").head(1)
   def main(args: Array[String]): Unit = {
     val form: HTMLFormElement = dom.document.getElementById("report-form").asInstanceOf[HTMLFormElement]
@@ -21,7 +21,8 @@ object Main {
     val reasonEl: HTMLInputElement = dom.document.getElementById("reason").asInstanceOf[HTMLInputElement]
     val typeEl: HTMLSelectElement = dom.document.getElementById("report-type").asInstanceOf[HTMLSelectElement]
     val submitEl: HTMLInputElement = dom.document.getElementById("submit-button").asInstanceOf[HTMLInputElement]
-    val redirectUrl: String = dom.document.getElementById("redirect").asInstanceOf[HTMLSpanElement].getAttribute("data-redir")
+    val redirectUrl: String = dom.document.getElementById("redirect").asInstanceOf[HTMLSpanElement]
+      .getAttribute("data-redir")
 
     typeEl.addEventListener("input", (e: Event) => {
       regexes.get(typeEl.value) foreach { regex =>
@@ -47,11 +48,12 @@ object Main {
         }.map(x => {
           if (x.status >= 200 && x.status < 300) {
             successEl.textContent = JSON.parse(x.responseText).message.toString
-            if (redirectUrl.matches(raw"https:\/\/(?:(?:www|[a-z]{2})\.)?khanacademy\.org.*")) dom.window.location.replace(redirectUrl)
+            if (redirectUrl.matches(raw"https:\/\/(?:(?:www|[a-z]{2})\.)?khanacademy\.org.*"))
+              dom.window.location.replace(redirectUrl)
           } else
             errorEl.textContent = JSON.parse(x.responseText).message.toString
           submitEl.disabled = false
         })
-    });
+    })
   }
 }

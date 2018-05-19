@@ -1,9 +1,6 @@
 package models
 
-class User(userKaid: String, userName: String) {
-  def kaid: String = userKaid
-  def name: String = userName
-}
+case class User(kaid: String, name: String)
 
 object User {
   def apply(kaid: String, name: String): User = new User(kaid, name)

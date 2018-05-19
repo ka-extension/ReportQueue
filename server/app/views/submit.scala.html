@@ -6,9 +6,10 @@
 	<p>Type: <select name="type" id="report-type">
 		<option @{Html(if (reportType == "program") "selected" else "")} value="program">Program</option>
 		<option @{Html(if (reportType == "user") "selected" else "")} value="user">User</option>
+		<option @{Html(if (reportType == "discussion") "selected" else "")} value="discussion">Discussion post (special format; use the extension)</option>
 	</select></p>
 	<div class="mdl-textfield mdl-js-textfield">
-		<input class="mdl-textfield__input" type="text" id="id" maxlength="255" value="@id" pattern="@{if (reportType == "user") raw"kaid_\d{5,30}" else raw"\d{5,20}"}" required>
+		<input class="mdl-textfield__input" type="text" id="id" value="@id" pattern="@{if (reportType == "user") raw"kaid_\d{5,30}" else if (reportType == "discussion") raw"([a-zA-Z]+)\|([a-zA-Z]+)\|([a-zA-Z\d]+)\|(kaencrypted_[\w]+)" else raw"\d{5,20}" }" required>
 		<label class="mdl-textfield__label" for="id">ID</label>
 		<span class="mdl-textfield__error">Invalid ID</span>
 	</div>

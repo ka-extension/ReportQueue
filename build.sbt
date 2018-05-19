@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.MappingsHelper._
+
 lazy val server = (project in file("server")).settings(commonSettings).settings(
   scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
@@ -15,6 +17,7 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
     "org.webjars" % "material-design-lite" % "1.3.0",
     "org.webjars" % "material-design-icons" % "3.0.1"
   ),
+  mappings in Universal ++= directory(baseDirectory.value / "conf"),
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
   EclipseKeys.preTasks := Seq(compile in Compile)
 ).enablePlugins(PlayScala).
